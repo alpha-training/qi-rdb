@@ -1,12 +1,5 @@
-h:hopen 8010;
-
-upd:insert;
-
-/ end of day: save, clear, hdb reload
-.u.end:{
-    t@:where`g=attr each(t:tables`.)@\:`sym;
-    .Q.hdpf[.ipc.conn`hdb;hsym `$.conf.stack.vars.data;`$string .z.D;`sym]; / .conf.stack.vars.data needs to be changed 
-    @[;`sym;`g#] each t;
- }
-
-sub:{[t] h(`.u.sub;t)}
+\e 1
+h:.ipc.conn`tp1;
+upd:{[t;x] t insert x;if[not`g=attr get[t]`sym;update `g#sym from t];}
+.u.end:{![`.;();0b;tables`.];.Q.gc`;}
+.proc.subscribe`
