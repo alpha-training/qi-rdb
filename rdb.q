@@ -6,22 +6,27 @@
 w:(0#`)!()
 
 pub1:{[t;x;w] $[count x:sel[x]w 1;[neg[w 0](`upd;t;x);count x];0]}
+selflush:{if[count r:sel[`. x;y];![x;$[`~y;();enlist(in;`sym;y)];0b;0#`];.Q.gc`];r}
+add:{$[(count w x)>i:w[x;;0]?.z.w;.[`.u.w;(x;i;1);union;y];w[x],:enlist(.z.w;y)];(x;selflush[x;y])}
 
-sub1:{0N!(`sub1;x;y);$[t~a:mt x;'"Cannot subscribe to all tables in an rdb";11=type a;:sub[;y]each a;not x in t;'x;[del[x].z.w;add[x;y]]]}
+osub:sub
 
-sub:{[t;x] r:sub1[t;x];flush`;setupd`;r}
+sub:{
+  if[t~a:mt x; '"Cannot subscribe to all tables in a chained rdb"];
+  r:osub[a;y];
+  setupd`;
+  r
+  }
 
-upd2:{[new;t;x]
+upd2:{[t;x]
   $[0=p:sum 0,pub1[t;x]each subs:.u.w t;
-    if[new;t insert x];
+    t insert x;
   p<count x;
-    $[new;insert;set][t;select from x where not sym in distinct raze subs[;1]];
+    t insert select from x where not sym in distinct raze subs[;1];
     ()];
   }
 
-flush:{{upd2[0b;x;`. x]}each t}   / flush to subscribers (if there are any)
-
-setupd:{`..upd set $[count handles`;upd2 1b;insert]}
+setupd:{`..upd set $[count handles`;upd2;insert]}
 
 pc:{h:handles`;del[;x]each t;if[not h~handles`;setupd`];}
 
@@ -34,6 +39,8 @@ end:{[d]
   }
 
 \d .
+
+tcounts:{desc a!(count get@)each a:tables x}
 
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
