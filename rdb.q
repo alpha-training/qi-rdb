@@ -6,7 +6,7 @@
 w:(0#`)!()
 
 pub1:{[t;x;w] $[count x:sel[x]w 1;[neg[w 0](`upd;t;x);count x];0]}
-selflush:{if[count r:sel[`. x;y];![x;$[`~y;();enlist(in;`sym;y)];0b;0#`];.Q.gc`];r}
+selflush:{if[count r:sel[`. x;y];![x;$[`~y;();enlist(in;`sym;enlist y)];0b;0#`];.Q.gc`];r}
 add:{$[(count w x)>i:w[x;;0]?.z.w;.[`.u.w;(x;i;1);union;y];w[x],:enlist(.z.w;y)];(x;selflush[x;y])}
 
 osub:sub
