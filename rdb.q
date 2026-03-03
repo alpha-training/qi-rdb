@@ -18,7 +18,7 @@ sub:{
   r
   }
 
-replayupd:{[sub;t;x] if[t in key sub;if[count r:sel[x;sub t];t insert r]]}
+replayupd:{[sub;t;x] if[count c:(a:sub t)`c;if[count r:sel[flip c!x;a`s];t insert r]]}
 
 upd2:{[t;x]
   $[0=p:sum 0,pub1[t;x]each subs:.u.w t;
@@ -46,7 +46,10 @@ tcounts:{desc a!(count get@)each a:tables x}
 
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
-  {.u.setupd .u.replayupd x`subs;.proc.replay . x`snapshot`logfile;}each .proc.subscribe`;
+  { 
+    .proc.initsnapshot x`snapshot;
+    .u.setupd .u.replayupd update c:cols each t from([t:key x`subs]s:get x`subs);
+    .proc.replay x`logfile;}each .proc.subscribe`;
   .u.setupd`;
   .u.init[];
   {update`g#sym from x}each .u.t;
