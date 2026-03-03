@@ -47,6 +47,7 @@ tcounts:{desc a!(count get@)each a:tables x}
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
   {.u.setupd .u.replayupd x`subs;.proc.replay . x`snapshot`logfile;}each .proc.subscribe`;
+  .u.setupd`;
   .u.init[];
   {update`g#sym from x}each .u.t;
   }
