@@ -18,6 +18,8 @@ sub:{
   r
   }
 
+replayupd:{[sub;t;x] if[t in key sub;if[count r:sel[x;sub t];t insert r]]}
+
 upd2:{[t;x]
   $[0=p:sum 0,pub1[t;x]each subs:.u.w t;
     t insert x;
@@ -26,13 +28,13 @@ upd2:{[t;x]
     ()];
   }
 
-setupd:{`..upd set $[count handles`;upd2;insert]}
+setupd:{`..upd set $[not any x~/:(`;::);x;count handles`;upd2;insert]}
 
 pc:{h:handles`;del[;x]each t;if[not h~handles`;setupd`];}
 
 end:{[d]
   .qi.info".u.end ",.qi.tostr d;
-  neg[handles`]@\:(`.u.end;x);
+  neg[handles`]@\:(`.u.end;d);
   {[t] .qi.info"Clearing and applying g# ",.qi.tostr t;delete from t;update `g#sym from t;}each t;
   .qi.info".Q.gc[]";
   .Q.gc`;
@@ -44,7 +46,7 @@ tcounts:{desc a!(count get@)each a:tables x}
 
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
-  .u.setupd`;
-  .proc.replay .proc.subscribe`;
+  {.u.setupd .u.replayupd x`subs;.proc.replay . x`snapshot`logfile;}each .proc.subscribe`;
   .u.init[];
+  {update`g#sym from x}each .u.t;
   }
