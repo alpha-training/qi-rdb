@@ -42,7 +42,7 @@ end:{[d]
 
 \d .
 
-tcounts:{desc a!(count get@)each a:tables x}
+tcounts:{`n xdesc([]t;n:(count get@)each t:tables`.)}
 
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
