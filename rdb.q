@@ -43,6 +43,7 @@ end:{[d]
 \d .
 
 tcounts:{`n xdesc([]t;n:(count get@)each t:tables`.)}
+preview:{[t;n] select[n]from t}
 
 .rdb.init:{
   .event.addhandler[`.z.pc;`.u.pc];
