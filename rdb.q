@@ -42,7 +42,7 @@ end:{[d]
 
 \d .
 
-tcounts:{`n xdesc([]t;n:(count get@)each t:tables`.)}
+tcounts:.qi.tcounts
 preview:{[t;n] select[n]from t}
 
 .rdb.init:{
